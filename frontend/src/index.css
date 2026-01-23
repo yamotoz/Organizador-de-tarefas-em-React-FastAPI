@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* Reset básico e configurações globais */
+@layer base {
+  body {
+    @apply bg-black text-gray-100 font-sans antialiased overflow-x-hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Garante que as opções do select sejam legíveis */
+  select {
+    @apply !bg-neutral-900 !text-white;
+  }
+
+  select option {
+    @apply bg-neutral-900 text-white;
+  }
+}
+
+/* Container do vídeo de fundo */
+.video-background {
+  @apply fixed inset-0 w-full h-full object-cover -z-10 brightness-[0.3];
+}
+
+/* Componentes customizados que vamos usar */
+@layer components {
+
+  /* Card com efeito glassmorphism - versão mais dark */
+  .glass-card {
+    @apply bg-black/40 backdrop-blur-lg border border-white/10 rounded-xl shadow-2xl;
+  }
+
+  /* Botão primário - mais clean */
+  .btn-primary {
+    @apply bg-white text-black hover:bg-gray-200 font-bold px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95;
+  }
+
+  /* Botão secundário mais sutil */
+  .btn-secondary {
+    @apply bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-medium px-6 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95;
+  }
+
+  /* Botão de perigo pra deletar */
+  .btn-danger {
+    @apply bg-red-500/80 hover:bg-red-600 text-white font-medium px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95;
+  }
+
+  /* Input com glassmorphism */
+  .input-glass {
+    @apply bg-white/10 backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300;
+  }
+
+  /* Container pra scroll customizado */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white/5 rounded-lg;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-lg hover:bg-white/30 transition-colors;
+  }
+}
+
+/* Utilitários extras */
+@layer utilities {
+
+  /* Animação de entrada suave */
+  .animate-enter {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  /* Text gradient elegante */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400 bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Sombra dourada sutil */
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+  }
+
+  /* Sombra roxa sutil */
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+}
+
+/* Animações de transição entre páginas */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}

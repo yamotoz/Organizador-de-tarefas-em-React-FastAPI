@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+venv/
+.env
+env/
+ENC/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# React/Vite build
+dist/
+dist-ssr/
+*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+Thumbs.db
+.DS_Store
+
+# Dados do projeto (ignorar tarefas reais e fotos de usuários para manter o Git limpo)
+backend/activities.json
+backend/uploads/*
+!backend/uploads/.gitkeep
