@@ -4,7 +4,7 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { updateActivity, deleteActivity } from '../services/api';
+import { updateActivity, deleteActivity, getImageUrl } from '../services/api';
 
 // Mapeia status pra cores elegantes
 const statusColors = {
@@ -56,61 +56,82 @@ function ActivityCard({ activity, onUpdate, onDelete }) {
         }
     };
 
+    // Pega a URL da imagem se existir
+    const imageUrl = activity.image_path ? getImageUrl(activity.image_path) : null;
+
     return (
         <div
             onClick={handleClick}
-            className="glass-card p-4 hover:bg-white/15 transition-all duration-300 cursor-pointer 
-                 group animate-slide-up hover:scale-102"
+            className="glass-card overflow-hidden hover:bg-white/15 transition-all duration-300 cursor-pointer 
+                 group animate-slide-up hover:scale-102 flex flex-col h-full"
         >
-            {/* Badge de status no topo */}
-            <div className="flex items-center justify-between mb-3">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium 
-                          bg-gradient-to-r ${statusColors[activity.status]} text-white shadow-lg`}>
-                    <span>{statusIcons[activity.status]}</span>
-                    {activity.status}
-                </span>
+            {/* Imagem de Capa (Preview) */}
+            {imageUrl && (
+                <div className="h-32 w-full relative overflow-hidden">
+                    <img
+                        src={imageUrl}
+                        alt={activity.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                            e.target.style.display = 'none'; // Esconde se der erro
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+            )}
 
-                {/* Indicador de imagem se tiver */}
-                {activity.image_path && (
-                    <span className="text-xl" title="Tem imagem anexada">
-                        📎
+            <div className="p-4 flex-1 flex flex-col">
+                {/* Badge de status no topo */}
+                <div className="flex items-center justify-between mb-3">
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium 
+                            bg-gradient-to-r ${statusColors[activity.status]} text-white shadow-lg`}>
+                        <span>{statusIcons[activity.status]}</span>
+                        {activity.status}
                     </span>
-                )}
-            </div>
 
-            {/* Título */}
-            <h3 className="text-lg font-semibold text-white mb-2 line-clamp-1 group-hover:text-primary-300 transition-colors">
-                {activity.title}
-            </h3>
+                    {/* Indicador de anexo (mantemos caso a imagem falhe ou para indicar anexo genericamente, mas podemos remover se a imagem já for o preview) */}
+                    {/* Vamos manter apenas se NÃO tiver mostrando a imagem, ou podemos deixar como um ícone discreto de clipe */}
+                    {activity.image_path && !imageUrl && (
+                        <span className="text-xl" title="Tem imagem anexada">
+                            📎
+                        </span>
+                    )}
+                </div>
 
-            {/* Descrição truncada */}
-            <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                {activity.description}
-            </p>
+                {/* Título */}
+                <h3 className="text-lg font-semibold text-white mb-2 line-clamp-1 group-hover:text-primary-300 transition-colors">
+                    {activity.title}
+                </h3>
 
-            {/* Ações - aparecem no hover */}
-            <div className="flex items-center gap-2 pt-3 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                {/* Dropdown de status */}
-                <select
-                    value={activity.status}
-                    onChange={handleStatusChange}
-                    onClick={(e) => e.stopPropagation()}
-                    className="input-glass text-sm py-1.5 px-2 flex-1 text-xs"
-                >
-                    <option value="pendente">⏳ Pendente</option>
-                    <option value="em andamento">🚀 Em Andamento</option>
-                    <option value="concluído">✅ Concluído</option>
-                </select>
+                {/* Descrição truncada */}
+                <p className="text-gray-300 text-sm mb-4 line-clamp-2 flex-1">
+                    {activity.description}
+                </p>
 
-                {/* Botão de deletar */}
-                <button
-                    onClick={handleDelete}
-                    className="px-3 py-1.5 bg-red-500/80 hover:bg-red-600 rounded-lg transition-all 
-                     text-white text-sm hover:scale-105 active:scale-95"
-                    title="Excluir atividade"
-                >
-                    🗑️
-                </button>
+                {/* Ações - aparecem no hover */}
+                <div className="flex items-center gap-2 pt-3 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity mt-auto">
+                    {/* Dropdown de status */}
+                    <select
+                        value={activity.status}
+                        onChange={handleStatusChange}
+                        onClick={(e) => e.stopPropagation()}
+                        className="input-glass text-sm py-1.5 px-2 flex-1 text-xs"
+                    >
+                        <option value="pendente">⏳ Pendente</option>
+                        <option value="em andamento">🚀 Em Andamento</option>
+                        <option value="concluído">✅ Concluído</option>
+                    </select>
+
+                    {/* Botão de deletar */}
+                    <button
+                        onClick={handleDelete}
+                        className="px-3 py-1.5 bg-red-500/80 hover:bg-red-600 rounded-lg transition-all 
+                        text-white text-sm hover:scale-105 active:scale-95"
+                        title="Excluir atividade"
+                    >
+                        🗑️
+                    </button>
+                </div>
             </div>
         </div>
     );
