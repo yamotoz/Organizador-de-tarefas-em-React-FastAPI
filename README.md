@@ -26,14 +26,22 @@ npm run dev
 ```
 O app estará disponível no seu navegador (geralmente em `http://localhost:5173`).
 
-OBS:De forma resumida, para iniciar o projeto, use:
+**OBS:De forma resumida, para iniciar o projeto, use:**
 
+```bash
+#clonar o repositorio
 git clone https://github.com/yamotoz/Organizador-de-tarefas-em-React-FastAPI.git
+# configurar a api
 clica duas vezes em setup_backend.bat
+# iniciar a api
 clica duas vezes em run_backend.bat
-abre o terminal na pasta frontend dentro do projeto
+```
+```bash
+# Abre o terminal na pasta frontend dentro do projeto
 digita npm install
+# iniciar o frontend
 digita npm run dev
+```
 e pronto, só criar suas tarefas e ser feliz.
 
 ---
