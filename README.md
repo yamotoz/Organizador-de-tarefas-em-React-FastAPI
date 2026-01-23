@@ -5,7 +5,6 @@ Sistema moderno e elegante para gestão de atividades (Kanban), com backend em P
 ## 🛠️ Como Rodar o Projeto
 
 ### 1. Backend (Python)
-### 1. Backend (Python)
 Para facilitar, use os scripts incluídos na raiz do projeto:
 
 **Primeira vez (Configuração):**
@@ -26,6 +25,16 @@ npm install
 npm run dev
 ```
 O app estará disponível no seu navegador (geralmente em `http://localhost:5173`).
+
+OBS:De forma resumida, para iniciar o projeto, use:
+
+git clone https://github.com/yamotoz/Organizador-de-tarefas-em-React-FastAPI.git
+clica duas vezes em setup_backend.bat
+clica duas vezes em run_backend.bat
+abre o terminal na pasta frontend dentro do projeto
+digita npm install
+digita npm run dev
+e pronto, só criar suas tarefas e ser feliz.
 
 ---
 
