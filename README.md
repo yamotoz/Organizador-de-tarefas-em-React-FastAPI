@@ -11,6 +11,9 @@ Abra um terminal na pasta `backend`:
 pip install -r requirements.txt
 
 # Iniciar o servidor
+python -m venv venv
+venv\Scripts\activate
+
 uvicorn main:app --reload
 ```
 A API estará rodando em: `http://127.0.0.1:8000`
