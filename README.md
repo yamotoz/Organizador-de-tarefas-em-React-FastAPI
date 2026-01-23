@@ -5,18 +5,16 @@ Sistema moderno e elegante para gestão de atividades (Kanban), com backend em P
 ## 🛠️ Como Rodar o Projeto
 
 ### 1. Backend (Python)
-Abra um terminal na pasta `backend`:
-```bash
-# Instalar dependências
-pip install -r requirements.txt
+### 1. Backend (Python)
+Para facilitar, use os scripts incluídos na raiz do projeto:
 
-# Iniciar o servidor
-python -m venv venv
-venv\Scripts\activate
+**Primeira vez (Configuração):**
+Execute o arquivo **`setup_backend.bat`**.
+Isso criará o ambiente virtual e instalará todas as dependências automaticamente.
 
-uvicorn main:app --reload
-```
-A API estará rodando em: `http://127.0.0.1:8000`
+**Para rodar o servidor:**
+Execute o arquivo **`run_backend.bat`**.
+A API iniciará em: `http://127.0.0.1:8000`
 
 ### 2. Frontend (React)
 Abra um terminal na pasta `frontend`:
