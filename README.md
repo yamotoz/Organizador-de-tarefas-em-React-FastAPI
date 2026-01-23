@@ -35,10 +35,23 @@ O app estará disponível no seu navegador (geralmente em `http://localhost:5173
 - ✏️ **Edição**: Altere títulos, descrições e status em tempo real.
 - 📱 **Responsivo**: Interface que se adapta a diferentes telas.
 
+## 📱 Screenshots
+<div align="center">
+  <h3>Versão Mobile</h3>
+  <img src="assets/celularprintoff.png" alt="Mobile View" width="200" />
+  
+  <h3>Versão Tablet</h3>
+  <img src="assets/tabletprintoff.png" alt="Tablet View" width="400" />
+
+  <h3>Versão Desktop</h3>
+  <img src="assets/desktopprintoff.png" alt="Desktop View" width="600" />
+</div>
+
 ## 📁 Organização do Código
 - **`/backend`**: API FastAPI com persistência em JSON (`activities.json`).
 - **`/frontend`**: Interface React com Tailwind CSS e UI minimalista.
 - **`/frontend/public`**: Ícones, vídeos de fundo e assets visuais.
+
 
 ---
 Desenvolvido com foco em estética e usabilidade. ✨
