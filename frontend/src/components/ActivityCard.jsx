@@ -5,6 +5,8 @@
 
 import { useNavigate } from 'react-router-dom';
 import { updateActivity, deleteActivity, getImageUrl } from '../services/api';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // Mapeia status pra cores elegantes
 const statusColors = {
@@ -19,22 +21,41 @@ const statusIcons = {
     'concluído': '✅',
 };
 
-function ActivityCard({ activity, onUpdate, onDelete }) {
+function ActivityCard({ activity, onUpdate, onDelete, isDragging: isOverlay }) {
     const navigate = useNavigate();
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id: activity?.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging && !isOverlay ? 0.4 : 1,
+        zIndex: isOverlay ? 1000 : 'auto',
+    };
+
+    if (!activity) return null;
 
     // Navega pra página de detalhes quando clica no card
-    const handleClick = () => {
+    const handleClick = (e) => {
+        // Se for o overlay ou se estiver arrastando, não navega
+        if (isOverlay) return;
         navigate(`/activity/${activity.id}`);
     };
 
     // Atualiza o status da atividade
     const handleStatusChange = async (e) => {
-        e.stopPropagation(); // Não ativa o click do card
+        e.stopPropagation();
         const newStatus = e.target.value;
 
         try {
             await updateActivity(activity.id, { status: newStatus });
-            onUpdate(); // Atualiza a lista
+            onUpdate();
         } catch (error) {
             console.error('Erro ao atualizar status:', error);
             alert('Erro ao atualizar o status da atividade');
@@ -43,12 +64,12 @@ function ActivityCard({ activity, onUpdate, onDelete }) {
 
     // Deleta a atividade
     const handleDelete = async (e) => {
-        e.stopPropagation(); // Não ativa o click do card
+        e.stopPropagation();
 
         if (window.confirm('Tem certeza que deseja excluir esta atividade?')) {
             try {
                 await deleteActivity(activity.id);
-                onDelete(); // Atualiza a lista
+                onDelete();
             } catch (error) {
                 console.error('Erro ao deletar:', error);
                 alert('Erro ao deletar a atividade');
@@ -61,9 +82,13 @@ function ActivityCard({ activity, onUpdate, onDelete }) {
 
     return (
         <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
             onClick={handleClick}
-            className="glass-card overflow-hidden hover:bg-white/15 transition-all duration-300 cursor-pointer 
-                 group animate-slide-up hover:scale-102 flex flex-col h-full"
+            className={`glass-card overflow-hidden hover:bg-white/15 transition-all duration-300 cursor-pointer 
+                 group animate-slide-up flex flex-col h-full ${isOverlay ? 'shadow-2xl ring-2 ring-primary-500 scale-105' : 'hover:scale-102'}`}
         >
             {/* Imagem de Capa (Preview) */}
             {imageUrl && (
@@ -73,7 +98,7 @@ function ActivityCard({ activity, onUpdate, onDelete }) {
                         alt={activity.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={(e) => {
-                            e.target.style.display = 'none'; // Esconde se der erro
+                            e.target.style.display = 'none';
                         }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -89,8 +114,7 @@ function ActivityCard({ activity, onUpdate, onDelete }) {
                         {activity.status}
                     </span>
 
-                    {/* Indicador de anexo (mantemos caso a imagem falhe ou para indicar anexo genericamente, mas podemos remover se a imagem já for o preview) */}
-                    {/* Vamos manter apenas se NÃO tiver mostrando a imagem, ou podemos deixar como um ícone discreto de clipe */}
+                    {/* Indicador de anexo */}
                     {activity.image_path && !imageUrl && (
                         <span className="text-xl" title="Tem imagem anexada">
                             📎

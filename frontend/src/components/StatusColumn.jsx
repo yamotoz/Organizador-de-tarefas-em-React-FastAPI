@@ -4,6 +4,11 @@
  */
 
 import ActivityCard from './ActivityCard';
+import { useDroppable } from '@dnd-kit/core';
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 // Configuração visual das colunas com imagens e descrições
 const columnConfig = {
@@ -29,9 +34,12 @@ const columnConfig = {
 
 function StatusColumn({ status, activities, onUpdate, onDelete }) {
     const config = columnConfig[status];
+    const { setNodeRef } = useDroppable({
+        id: status,
+    });
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full" ref={setNodeRef}>
             {/* Header da coluna - Estilo Card com Imagem */}
             <div className={`glass-card mb-4 bg-gradient-to-r ${config.gradient} overflow-hidden group hover:scale-[1.02] transition-transform duration-300`}>
                 <div className="p-4 flex items-center gap-4">
@@ -62,28 +70,33 @@ function StatusColumn({ status, activities, onUpdate, onDelete }) {
             </div>
 
             {/* Lista de atividades com scroll */}
-            <div className="flex-1 space-y-3 overflow-y-auto custom-scrollbar pr-2" style={{ maxHeight: 'calc(100vh - 280px)' }}>
-                {activities.length === 0 ? (
-                    // Estado vazio elegante
-                    <div className="glass-card p-8 text-center">
-                        <p className="text-gray-400 text-sm">
-                            Nenhuma atividade {status} ainda
-                        </p>
-                        <p className="text-gray-500 text-xs mt-1">
-                            As atividades aparecerão aqui ✨
-                        </p>
-                    </div>
-                ) : (
-                    // Cards das atividades
-                    activities.map((activity) => (
-                        <ActivityCard
-                            key={activity.id}
-                            activity={activity}
-                            onUpdate={onUpdate}
-                            onDelete={onDelete}
-                        />
-                    ))
-                )}
+            <div className="flex-1 space-y-3 overflow-y-auto custom-scrollbar pr-2 min-h-[200px]" style={{ maxHeight: 'calc(100vh - 280px)' }}>
+                <SortableContext
+                    items={activities.map(a => a.id)}
+                    strategy={verticalListSortingStrategy}
+                >
+                    {activities.length === 0 ? (
+                        // Estado vazio elegante
+                        <div className="glass-card p-8 text-center">
+                            <p className="text-gray-400 text-sm">
+                                Nenhuma atividade {status} ainda
+                            </p>
+                            <p className="text-gray-500 text-xs mt-1">
+                                As atividades aparecerão aqui ✨
+                            </p>
+                        </div>
+                    ) : (
+                        // Cards das atividades
+                        activities.map((activity) => (
+                            <ActivityCard
+                                key={activity.id}
+                                activity={activity}
+                                onUpdate={onUpdate}
+                                onDelete={onDelete}
+                            />
+                        ))
+                    )}
+                </SortableContext>
             </div>
         </div>
     );

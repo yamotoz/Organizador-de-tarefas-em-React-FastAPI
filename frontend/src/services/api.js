@@ -50,6 +50,12 @@ export const deleteActivity = async (id) => {
     return response.data;
 };
 
+// Reordena as atividades em massa
+export const reorderActivities = async (activities) => {
+    const response = await api.put('/activities/reorder', activities);
+    return response.data;
+};
+
 // Faz upload de imagem pra uma atividade
 export const uploadActivityImage = async (id, file) => {
     const formData = new FormData();
